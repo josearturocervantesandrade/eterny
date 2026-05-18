@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETERNITY — Clínica de Medicina Estética</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --deep: #1a1510;
+    --gold: #c9a96e;
+    --gold-light: #e8d5a8;
+    --rose: #c9857a;
+    --text: #2e2820;
+    --muted: #8a7f72;
+    --line: rgba(201,169,110,0.3);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* GRAIN OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 24px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(245,240,232,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(4px);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    color: var(--deep);
+    text-decoration: none;
+  }
+
+  .nav-logo span {
+    color: var(--gold);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-cta {
+    background: var(--deep);
+    color: var(--cream) !important;
+    padding: 10px 22px;
+    font-size: 0.68rem !important;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+
+  .nav-cta:hover { background: var(--gold) !important; color: var(--deep) !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 140px 60px 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 1s 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 6vw, 7rem);
+    font-weight: 300;
+    line-height: 0.92;
+    color: var(--deep);
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeUp 1s 0.5s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 400px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 1s 0.7s forwards;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 1s 0.9s forwards;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 16px 36px;
+    background: var(--deep);
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+  }
+
+  .btn-primary:hover {
+    background: var(--gold);
+    color: var(--deep);
+  }
+
+  .btn-outline {
+    display: inline-block;
+    padding: 15px 36px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+  }
+
+  .btn-outline:hover {
+    background: var(--gold);
+    color: var(--deep);
+  }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 60%, rgba(201,169,110,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(201,133,122,0.12) 0%, transparent 50%),
+      linear-gradient(135deg, #e8e0d0 0%, #d4c9b4 100%);
+  }
+
+  .hero-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(201,169,110,0.15) 1px, transparent 1px);
+    background-size: 28px 28px;
+    opacity: 0.6;
+  }
+
+  .hero-circle {
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border: 1px solid rgba(201,169,110,0.3);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: rotateSlow 20s linear infinite;
+  }
+
+  .hero-circle::before {
+    content: '';
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    border: 1px solid rgba(201,169,110,0.2);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .hero-card {
+    position: absolute;
+    bottom: 60px;
+    left: 40px;
+    background: rgba(245,240,232,0.9);
+    backdrop-filter: blur(12px);
+    padding: 24px 28px;
+    border-left: 3px solid var(--gold);
+    opacity: 0;
+    animation: fadeUp 1s 1.2s forwards;
+  }
+
+  .hero-card .label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .hero-card .value { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--deep); }
+  .hero-card .desc { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
+
+  .hero-ornament {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 8rem;
+    font-style: italic;
+    color: rgba(201,169,110,0.1);
+    line-height: 1;
+    user-select: none;
+  }
+
+  /* DIVIDER */
+  .divider {
+    padding: 60px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .divider-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--muted);
+    flex: 1;
+    text-align: center;
+  }
+
+  .divider-line { flex: 1; height: 1px; background: var(--line); }
+
+  /* DOCTOR */
+  .doctor {
+    padding: 100px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .doctor-visual {
+    position: relative;
+  }
+
+  .doctor-frame {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: linear-gradient(145deg, #d4c9b4, #e8e0d0);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .doctor-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(201,169,110,0.08) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .doctor-monogram {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 9rem;
+    font-style: italic;
+    color: rgba(201,169,110,0.25);
+    z-index: 1;
+  }
+
+  .doctor-badge {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 100px;
+    height: 100px;
+    background: var(--gold);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .doctor-badge span { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 600; color: var(--deep); }
+  .doctor-badge small { font-size: 0.55rem; letter-spacing: 0.15em; color: var(--deep); text-transform: uppercase; text-align: center; line-height: 1.3; }
+
+  .section-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 4vw, 3.6rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--deep);
+    margin-bottom: 28px;
+  }
+
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  .section-body {
+    font-size: 0.88rem;
+    line-height: 1.9;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 32px;
+  }
+
+  .tag {
+    padding: 8px 18px;
+    border: 1px solid var(--line);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* TREATMENTS */
+  .treatments {
+    padding: 100px 60px;
+    background: var(--deep);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .treatments::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(201,169,110,0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .treatments-header {
+    text-align: center;
+    margin-bottom: 70px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .treatments-header .section-label { color: var(--gold); }
+  .treatments-header .section-title { color: var(--cream); }
+
+  .treatments-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .treatment-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(201,169,110,0.15);
+    padding: 48px 36px;
+    transition: all 0.4s;
+    cursor: default;
+  }
+
+  .treatment-card:hover {
+    background: rgba(201,169,110,0.08);
+    border-color: rgba(201,169,110,0.4);
+    transform: translateY(-4px);
+  }
+
+  .treatment-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    font-style: italic;
+    color: rgba(201,169,110,0.2);
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+
+  .treatment-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  .treatment-desc {
+    font-size: 0.82rem;
+    line-height: 1.8;
+    color: rgba(245,240,232,0.5);
+  }
+
+  .treatment-line {
+    width: 36px;
+    height: 1px;
+    background: var(--gold);
+    margin-bottom: 20px;
+    transition: width 0.4s;
+  }
+
+  .treatment-card:hover .treatment-line { width: 60px; }
+
+  /* LOCATIONS */
+  .locations {
+    padding: 100px 60px;
+  }
+
+  .locations-header {
+    text-align: center;
+    margin-bottom: 70px;
+  }
+
+  .locations-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .location-card {
+    border: 1px solid var(--line);
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .location-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+
+  .location-card:hover::before { transform: scaleX(1); }
+  .location-card:hover { border-color: var(--gold); }
+
+  .location-tag {
+    display: inline-block;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(201,169,110,0.1);
+    padding: 6px 14px;
+    margin-bottom: 24px;
+  }
+
+  .location-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    color: var(--deep);
+    margin-bottom: 20px;
+  }
+
+  .location-address {
+    font-size: 0.84rem;
+    line-height: 1.7;
+    color: var(--muted);
+    padding-left: 16px;
+    border-left: 2px solid var(--line);
+    margin-bottom: 28px;
+  }
+
+  .location-map-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    transition: gap 0.3s;
+  }
+
+  .location-map-btn:hover { gap: 14px; }
+  .location-map-btn svg { transition: transform 0.3s; }
+  .location-map-btn:hover svg { transform: translateX(4px); }
+
+  /* HOURS */
+  .hours-strip {
+    background: var(--gold);
+    padding: 40px 60px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .hour-item { text-align: center; }
+  .hour-day { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--deep); opacity: 0.7; margin-bottom: 6px; }
+  .hour-time { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--deep); font-weight: 300; }
+
+  .hours-divider { width: 1px; height: 50px; background: rgba(26,21,16,0.2); }
+
+  /* CONTACT */
+  .contact {
+    padding: 100px 60px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .contact-info h2 { margin-bottom: 40px; }
+
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .contact-icon {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--gold);
+  }
+
+  .contact-item-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .contact-item-value { font-size: 0.92rem; color: var(--deep); }
+  .contact-item-value a { color: var(--deep); text-decoration: none; transition: color 0.3s; }
+  .contact-item-value a:hover { color: var(--gold); }
+
+  .contact-social {
+    display: flex;
+    gap: 12px;
+    margin-top: 36px;
+  }
+
+  .social-btn {
+    padding: 12px 22px;
+    border: 1px solid var(--line);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .social-btn:hover {
+    background: var(--deep);
+    color: var(--cream);
+    border-color: var(--deep);
+  }
+
+  .contact-cta {
+    background: var(--deep);
+    padding: 48px;
+    position: sticky;
+    top: 100px;
+  }
+
+  .contact-cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    color: var(--cream);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  .contact-cta-title em { font-style: italic; color: var(--gold); }
+
+  .contact-cta-text {
+    font-size: 0.82rem;
+    line-height: 1.8;
+    color: rgba(245,240,232,0.5);
+    margin-bottom: 32px;
+  }
+
+  .contact-cta a {
+    display: block;
+    padding: 16px 28px;
+    margin-bottom: 12px;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  .cta-call { background: var(--gold); color: var(--deep); }
+  .cta-call:hover { background: var(--cream); }
+
+  .cta-wa { background: transparent; border: 1px solid rgba(201,169,110,0.3); color: var(--cream); }
+  .cta-wa:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* FOOTER */
+  footer {
+    background: #0f0d0a;
+    padding: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    border-top: 1px solid rgba(201,169,110,0.15);
+  }
+
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--cream);
+    letter-spacing: 0.3em;
+  }
+
+  .footer-logo span { color: var(--gold); }
+
+  footer p {
+    font-size: 0.72rem;
+    color: rgba(245,240,232,0.3);
+    letter-spacing: 0.05em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes rotateSlow {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* MOBILE */
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 120px 24px 60px; }
+    .hero-right { height: 300px; }
+    .doctor { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
+    .treatments { padding: 60px 24px; }
+    .treatments-grid { grid-template-columns: 1fr; gap: 2px; }
+    .locations { padding: 60px 24px; }
+    .locations-grid { grid-template-columns: 1fr; }
+    .hours-strip { padding: 32px 24px; }
+    .contact { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
+    .contact-cta { position: static; }
+    footer { padding: 40px 24px; }
+    .divider { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">ETERNITY<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#doctor">El Doctor</a></li>
+    <li><a href="#tratamientos">Tratamientos</a></li>
+    <li><a href="#sedes">Sedes</a></li>
+    <li><a href="#contacto" class="nav-cta">Agendar cita</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-label">Medicina Estética · Zona Esmeralda</p>
+    <h1 class="hero-title">Belleza<br><em>desde</em><br>adentro.</h1>
+    <p class="hero-subtitle">Tratamientos no invasivos de vanguardia que combinan ciencia, tecnología y bienestar integral para revelar tu mejor versión de forma natural.</p>
+    <div class="hero-btns">
+      <a href="#contacto" class="btn-primary">Agendar consulta</a>
+      <a href="#tratamientos" class="btn-outline">Ver tratamientos</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-bg"></div>
+    <div class="hero-pattern"></div>
+    <div class="hero-circle"></div>
+    <div class="hero-ornament">E</div>
+    <div class="hero-card">
+      <p class="label">Tecnología</p>
+      <p class="value">Venus™</p>
+      <p class="desc">Legacy — Aparatología certificada</p>
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider">
+  <div class="divider-line"></div>
+  <p class="divider-text">"Modulación del envejecimiento con enfoque natural y científico"</p>
+  <div class="divider-line"></div>
+</div>
+
+<!-- DOCTOR -->
+<section class="doctor" id="doctor">
+  <div class="doctor-visual">
+    <div class="doctor-frame">
+      <div class="doctor-monogram">JG</div>
+    </div>
+    <div class="doctor-badge">
+      <span>+</span>
+      <small>Speaker<br>PBSerum</small>
+    </div>
+  </div>
+  <div class="doctor-content fade-up">
+    <p class="section-label">El especialista</p>
+    <h2 class="section-title">Dr. Joaquín<br><em>González</em><br>Ontiveros</h2>
+    <p class="section-body">
+      Médico especialista en medicina estética y modulación del envejecimiento, el Dr. González lidera ETERNITY con un enfoque innovador que une la aparatología de última generación con el impulso de hábitos saludables para lograr resultados genuinamente naturales.
+    </p>
+    <p class="section-body">
+      Reconocido como médico conferencista (speaker) de la marca PBSerum para el perfilamiento y eliminación de grasa localizada, combina su expertise clínico con formación científica continua de vanguardia.
+    </p>
+    <div class="tags">
+      <span class="tag">Medicina Estética</span>
+      <span class="tag">Aparatología Avanzada</span>
+      <span class="tag">Anti-Aging</span>
+      <span class="tag">Speaker PBSerum</span>
+    </div>
+  </div>
+</section>
+
+<!-- TREATMENTS -->
+<section class="treatments" id="tratamientos">
+  <div class="treatments-header fade-up">
+    <p class="section-label">Lo que ofrecemos</p>
+    <h2 class="section-title" style="color: var(--cream);">Tratamientos<br><em>destacados</em></h2>
+  </div>
+  <div class="treatments-grid">
+    <div class="treatment-card fade-up">
+      <div class="treatment-num">01</div>
+      <div class="treatment-line"></div>
+      <h3 class="treatment-name">Enzimas Recombinantes<br>PBSerum</h3>
+      <p class="treatment-desc">Protocolo especializado para perfilamiento corporal y eliminación de grasa localizada con resultados progresivos y naturales.</p>
+    </div>
+    <div class="treatment-card fade-up">
+      <div class="treatment-num">02</div>
+      <div class="treatment-line"></div>
+      <h3 class="treatment-name">Venus Legacy™<br>Technology</h3>
+      <p class="treatment-desc">Tecnología certificada de radiofrecuencia para reducción de arrugas, eliminación de celulitis y rejuvenecimiento facial profundo.</p>
+    </div>
+    <div class="treatment-card fade-up">
+      <div class="treatment-num">03</div>
+      <div class="treatment-line"></div>
+      <h3 class="treatment-name">Toxina<br>Botulínica</h3>
+      <p class="treatment-desc">Aplicación personalizada y armónica para suavizar líneas de expresión, respetando la naturalidad de tus rasgos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATIONS -->
+<section class="locations" id="sedes">
+  <div class="locations-header fade-up">
+    <p class="section-label">Encuéntranos</p>
+    <h2 class="section-title">Nuestras <em>sedes</em></h2>
+  </div>
+  <div class="locations-grid">
+    <div class="location-card fade-up">
+      <span class="location-tag">Sede Principal</span>
+      <h3 class="location-name">Ciudad Satélite</h3>
+      <p class="location-address">
+        Circuito Médicos 24, 2do Piso<br>
+        Ciudad Satélite, Naucalpan de Juárez<br>
+        Estado de México
+      </p>
+      <a href="https://maps.google.com?q=Circuito+Medicos+24+Ciudad+Satelite+Naucalpan" target="_blank" class="location-map-btn">
+        Ver en mapa
+        <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+          <path d="M11 1l4 4-4 4M15 5H1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </a>
+    </div>
+    <div class="location-card fade-up">
+      <span class="location-tag">Zona Esmeralda</span>
+      <h3 class="location-name">Eternity 2.0</h3>
+      <p class="location-address">
+        Circuito Plaza Esmeralda<br>
+        Manzana 001 N° 4<br>
+        Ciudad López Mateos, Estado de México
+      </p>
+      <a href="https://maps.google.com?q=Circuito+Plaza+Esmeralda+Lopez+Mateos" target="_blank" class="location-map-btn">
+        Ver en mapa
+        <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+          <path d="M11 1l4 4-4 4M15 5H1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- HOURS STRIP -->
+<div class="hours-strip">
+  <div class="hour-item">
+    <p class="hour-day">Lunes — Viernes</p>
+    <p class="hour-time">10:00 — 20:00</p>
+  </div>
+  <div class="hours-divider"></div>
+  <div class="hour-item">
+    <p class="hour-day">Sábados</p>
+    <p class="hour-time">09:00 — 14:00</p>
+  </div>
+  <div class="hours-divider"></div>
+  <div class="hour-item">
+    <p class="hour-day">Domingos</p>
+    <p class="hour-time">Cerrado</p>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section class="contact" id="contacto">
+  <div class="contact-info">
+    <p class="section-label fade-up">Contacto</p>
+    <h2 class="section-title fade-up">Agenda tu<br><em>consulta</em></h2>
+
+    <div class="contact-item fade-up">
+      <div class="contact-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.7 11.61a19.79 19.79 0 01-3.07-8.67A2 2 0 012.61 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.64a16 16 0 006.29 6.29l.86-.86a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+        </svg>
+      </div>
+      <div>
+        <p class="contact-item-label">Llamadas directas</p>
+        <p class="contact-item-value"><a href="tel:5526253111">55 2625 3111</a></p>
+      </div>
+    </div>
+
+    <div class="contact-item fade-up">
+      <div class="contact-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+        </svg>
+      </div>
+      <div>
+        <p class="contact-item-label">WhatsApp</p>
+        <p class="contact-item-value"><a href="https://wa.me/5518673594" target="_blank">55 1867 3594</a></p>
+      </div>
+    </div>
+
+    <div class="contact-social fade-up">
+      <a href="https://www.facebook.com/p/Eternity-Dr-Joaquin-Raul-Gonzalez-Ontiveros-100063597457586/" target="_blank" class="social-btn">Facebook</a>
+      <a href="https://www.instagram.com/eternity_dr/" target="_blank" class="social-btn">Instagram</a>
+    </div>
+  </div>
+
+  <div class="contact-cta fade-up">
+    <h3 class="contact-cta-title">¿Listo para<br>comenzar tu<br><em>transformación?</em></h3>
+    <p class="contact-cta-text">Agenda tu consulta de valoración con el Dr. González y descubre el tratamiento ideal para tus objetivos.</p>
+    <a href="tel:5526253111" class="contact-cta cta-call">&#9742; Llamar ahora</a>
+    <a href="https://wa.me/5518673594" target="_blank" class="contact-cta cta-wa">&#10003; Escribir por WhatsApp</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ETERNITY<span>.</span></div>
+  <p>© 2025 Clínica Eternity · Dr. Joaquín Raúl González Ontiveros</p>
+  <p>Zona Esmeralda & Ciudad Satélite · Estado de México</p>
+</footer>
+
+<script>
+  // Intersection Observer for fade-up animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
